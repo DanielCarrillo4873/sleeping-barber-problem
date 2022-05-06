@@ -1,15 +1,22 @@
 <template>
-  <div class="card has-background-danger has-text-white">
+  <div
+      class="card has-text-white"
+      :class="{
+        'has-background-danger': client,
+        'has-background-success': !client,
+      }"
+  >
     <div class="card-header">
       <div class="card-header-title is-centered has-text-white">
         Chair {{chair}}
       </div>
     </div>
     <div class="card-content">
-      <p>Chair occupied by process: {{process}}</p>
+      <p v-if="client">Chair occupied by client: {{client}}</p>
+      <p v-else>Chair is free</p>
     </div>
     <div class="card-footer">
-      <a href="#" class="card-footer-item has-text-white">
+      <a @click.prevent="freeChair(chair - 1)" class="card-footer-item has-text-white">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
       </a>
     </div>
@@ -17,9 +24,14 @@
 </template>
 
 <script>
+import {mapMutations} from 'vuex';
+
 export default {
   name: 'ChairComponent',
-  props: ['chair', 'process']
+  props: ["chair", "client"],
+  methods: {
+    ...mapMutations(["freeChair"]),
+  }
 }
 </script>
 

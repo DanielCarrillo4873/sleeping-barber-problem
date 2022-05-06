@@ -1,6 +1,12 @@
 <template>
 
-  <div class="card has-background-warning">
+  <div
+    class="card"
+    :class="{
+      'has-background-warning': barber,
+      'has-background-warning-light': !barber,
+    }"
+  >
 
     <div class="card-header">
       <div class="card-header-title">
@@ -10,7 +16,7 @@
 
     <div class="card-content">
       <p>
-        {{barber ? 'Process' + barber +" is in barber's chair" : 'Barber free'}}
+        {{barber ? 'Client ' + barber +" is in barber's chair" : 'Barber free'}}
       </p>
     </div>
 

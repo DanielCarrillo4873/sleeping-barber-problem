@@ -29,32 +29,43 @@ const store = createStore({
     },
     useBarber(state, id){
       let client = state.clients.find(item => item.id === id)
+      const indexOfFreeChair = state.waitQueue.indexOf(null)
       if(!state.barber) {
         state.barber = id
         client.state = 1
-      }else if (state.waitQueue.length < 3){
-        const index = state.waitQueue.indexOf(null)
-        state.waitQueue[index] = id
+      }else if (indexOfFreeChair >= 0){
+        state.waitQueue[indexOfFreeChair] = id
         client.state = 2
       }
     },
     freeBarber(state){
       if(state.barber != null){
         const client = state.clients.find(item => item.id === state.barber)
+        const indexOfOccupiedChair = state.waitQueue.findIndex(item => item != null)
+        console.log(indexOfOccupiedChair)
         state.barber = null
         client.state = 0
-        if(state.waitQueue.length){
-          const id = state.waitQueue.shift()
+        if(indexOfOccupiedChair >= 0){
+          const id = state.waitQueue[indexOfOccupiedChair]
           const waiting = state.clients.find(item => item.id === id)
           state.barber = id
           waiting.state = 1
+          for(let i = indexOfOccupiedChair + 1; i < state.waitQueue.length; i++){
+            state.waitQueue[i-1] = state.waitQueue[i]
+          }
+          state.waitQueue[state.waitQueue.length-1] = null
         }
       }
     },
     freeChair(state, chair){
-      const client = state.clients.find(item => item.id === state.waitQueue[chair])
-      state.waitQueue[chair] = null
-      client.state = 0
+      if(state.waitQueue[chair] != null) {
+        const client = state.clients.find(item => item.id === state.waitQueue[chair])
+        client.state = 0
+        for(let i = chair + 1; i < state.waitQueue.length; i++){
+          state.waitQueue[i-1] = state.waitQueue[i]
+        }
+        state.waitQueue[state.waitQueue.length-1] = null
+      }
     }
   }
 })

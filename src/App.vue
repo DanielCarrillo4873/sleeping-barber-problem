@@ -24,12 +24,13 @@
     <!-- Waiting chairs -->
     <div class="columns">
       <div class="column" v-for="i in 3" :key="i">
-        <Chair :chair="i" :process="i" />
+        <Chair :chair="i" :client="$store.state.waitQueue[i - 1]" />
       </div>
     </div>
 
+    <!-- Create client button -->
     <section class="section">
-      <button class="button is-success" @click.prevent="$store.commit('createClient')">
+      <button class="button is-info" @click.prevent="$store.commit('createClient')">
         Add client <i class="ml-2 fa-solid fa-circle-plus"></i>
       </button>
     </section>
