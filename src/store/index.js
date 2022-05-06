@@ -37,10 +37,9 @@ const store = createStore({
         state.waitQueue[index] = id
         client.state = 2
       }
-      client.state = 0
     },
     freeBarber(state){
-      if(!state.barber){
+      if(state.barber != null){
         const client = state.clients.find(item => item.id === state.barber)
         state.barber = null
         client.state = 0
