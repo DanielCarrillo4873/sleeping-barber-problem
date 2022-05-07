@@ -12,7 +12,10 @@ const store = createStore({
   getters: {
     freeClients(state){
       return state.clients.filter(item => item.state === 0)
-    }
+    },
+    freeChair(state){
+      return state.waitQueue.indexOf(null)
+    },
   },
   mutations: {
     createClient(state){
